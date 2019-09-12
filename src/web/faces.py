@@ -12,7 +12,7 @@ def index():
 @app.route('/classifyImage', methods=['POST'])
 def upload():
     try:
-        image = request.files['image'].read()
+        image = request.files['img'].read()
         features = eg_processor.process_image(image)
 
         return jsonify(results = features)

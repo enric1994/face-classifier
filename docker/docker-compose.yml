@@ -16,4 +16,4 @@ services:
     volumes:
       - ../:/ekholabs/face-classifier
      
-    command: python src/web/faces.py
+    command: python3 src/web/faces.py
