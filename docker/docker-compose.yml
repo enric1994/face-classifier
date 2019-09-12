@@ -1,0 +1,19 @@
+version: '2.3'
+
+services:
+
+  face-classifier:
+    image: face-classifier
+    container_name: face-classifier
+    working_dir: /ekholabs/face-classifier
+    build:
+      context: ../
+      dockerfile: docker/Dockerfile
+
+    ports:
+      - "8084:8084"
+
+    volumes:
+      - ../:/ekholabs/face-classifier
+     
+    command: python src/web/faces.py
