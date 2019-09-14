@@ -15,6 +15,8 @@ from utils.inference import load_detection_model
 from utils.inference import load_image
 from utils.preprocessor import preprocess_input
 
+from keras import backend as K
+
 def process_image(image):
 
     try:
@@ -68,23 +70,11 @@ def process_image(image):
             rgb_face = preprocess_input(rgb_face, False)
             rgb_face = np.expand_dims(rgb_face, 0)
             gender_prediction = gender_classifier.predict(rgb_face)
-            # gender_label_arg = np.argmax(gender_prediction)
-            # gender_text = gender_labels[gender_label_arg]
 
             gray_face = preprocess_input(gray_face, True)
             gray_face = np.expand_dims(gray_face, 0)
             gray_face = np.expand_dims(gray_face, -1)
             emotion_prediction = emotion_classifier.predict(gray_face)
-            # emotion_text = emotion_labels[emotion_label_arg]
-
-            # if gender_text == gender_labels[0]:
-            #     color = (0, 0, 255)
-            # else:
-            #     color = (255, 0, 0)
-
-            # draw_bounding_box(face_coordinates, rgb_image, color)
-            # draw_text(face_coordinates, rgb_image, gender_text, color, 0, -20, 1, 2)
-            # draw_text(face_coordinates, rgb_image, emotion_text, color, 0, -50, 1, 2)
 
             features.append({'gender_prediction_female':str(gender_prediction[0][0]),
             'gender_prediction_male':str(gender_prediction[0][1]),
@@ -103,15 +93,6 @@ def process_image(image):
     except Exception as err:
         logging.error('Error in emotion gender processor: "{0}"'.format(err))
 
-    # bgr_image = cv2.cvtColor(rgb_image, cv2.COLOR_RGB2BGR)
 
-    # dirname = 'result'
-    # if not os.path.exists(dirname):
-    #     os.mkdir(dirname)
-
-    # features = [
-    #         {'a': 1, 'b': 2},
-    #         {'a': 5, 'b': 10}
-    #        ]
+    K.clear_session()
     return features
-    # cv2.imwrite(os.path.join(dirname, 'predicted_image.png'), bgr_image)
